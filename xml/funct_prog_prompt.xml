@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prompt>
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       GENERIC FUNCTIONAL CODE PROMPT TEMPLATE
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <meta>
+    <version>1.0</version>
+    <language></language> <!-- python, typescript, etc. -->
+    <project_name></project_name>
+  </meta>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       SECTION 1: TASK DEFINITION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <todo>
+    <summary>
+      <!-- Brief description of what needs to be done -->
+    </summary>
+    <goals>
+      <goal priority="1"></goal>
+      <goal priority="2"></goal>
+      <!-- Add more goals as needed -->
+    </goals>
+  </todo>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       SECTION 2: CODE STRUCTURE CONSTRAINTS
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <code_structure>
+    <!--
+      ALLOWED DEFINITIONS:
+      The code may ONLY contain these two types of top-level definitions:
+        1. DB (Database Dictionaries) - Data storage structures
+        2. Functions - Pure functional operations
+
+      FREEDOM LEVELS:
+        - "strict"    : Only define exactly what is listed, nothing more
+        - "extend"    : Define what is listed + AI may add related items if necessary
+        - "free"      : AI has full freedom for this category
+
+      USAGE EXAMPLES:
+        databases freedom="strict"   -> Only these exact DBs, no others
+        functions freedom="free"     -> AI decides all functions
+        databases freedom="extend"   -> These DBs required, AI may add more if needed
+    -->
+
+    <databases freedom="strict">
+      <!--
+        Define your database dictionaries here.
+        Format: <db name="NAME_DB" description="purpose"/>
+        Example: <db name="CONFIG_DB" description="application configuration"/>
+        Example: <db name="USERS_DB" description="user data storage"/>
+
+        Leave empty if freedom="free"
+      -->
+    </databases>
+
+    <functions freedom="strict">
+      <!--
+        Define your functions here.
+        Format: <fn name="function_name" description="what it does"/>
+        Example: <fn name="validate_input" description="validates user input"/>
+        Example: <fn name="process_data" description="transforms raw data"/>
+
+        Leave empty if freedom="free"
+      -->
+    </functions>
+  </code_structure>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       SECTION 3: REQUIREMENTS & PRINCIPLES (DO NOT MODIFY)
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <requirements>
+    <paradigm>
+      <rule id="FUNC-01">Code must be purely functional - no side effects where avoidable</rule>
+      <rule id="FUNC-02">No classes - use functions and data structures only</rule>
+      <rule id="FUNC-03">Functions must be deterministic - same input always produces same output</rule>
+    </paradigm>
+
+    <principles>
+      <principle id="SRP">
+        Single Responsibility Principle: Each function does exactly ONE thing
+      </principle>
+      <principle id="KISS">
+        Keep It Simple Stupid: Prefer simple, readable solutions over clever ones
+      </principle>
+      <principle id="DRY">
+        Don't Repeat Yourself: No duplicated logic - extract common patterns
+      </principle>
+    </principles>
+
+    <function_standard>
+      <!--
+        ALL functions MUST follow this standard format:
+
+        def function_name(param1: Type1, param2: Type2) -> ReturnType:
+            '''Brief description of what function does.'''
+            # Implementation
+            return result
+
+        RULES:
+        - All parameters must have type hints
+        - Return type must be specified
+        - Docstring required
+        - Function name must be descriptive (verb_noun format preferred)
+      -->
+      <rule id="FN-01">All parameters must have explicit type hints</rule>
+      <rule id="FN-02">Return type must always be specified</rule>
+      <rule id="FN-03">Include brief docstring describing purpose</rule>
+      <rule id="FN-04">Use descriptive names (verb_noun format: validate_input, process_data)</rule>
+      <rule id="FN-05">Keep functions small - if it needs scrolling, split it</rule>
+    </function_standard>
+
+    <prohibitions>
+      <prohibition id="NO-01">
+        NO definitions inside functions (no nested functions, no inner classes, no local type definitions)
+      </prohibition>
+      <prohibition id="NO-02">
+        NO getter functions that just return unmodified data structures
+        BAD:  def get_config(): return {"key": "value"}
+        GOOD: CONFIG_DB = {"key": "value"}  # Define at module level
+      </prohibition>
+      <prohibition id="NO-03">
+        NO middleware layers or wrapper dictionaries
+        BAD:  data = {"input": _input}; process(data["input"])
+        GOOD: process(_input)
+      </prohibition>
+      <prohibition id="NO-04">
+        NO unused code - every line must serve a purpose
+      </prohibition>
+      <prohibition id="NO-05">
+        NO repeated code - if logic appears twice, extract to function
+      </prohibition>
+      <prohibition id="NO-06">
+        NO classes or class-based patterns
+      </prohibition>
+      <prohibition id="NO-07">
+        NO returning dictionaries that weren't modified within the function
+      </prohibition>
+    </prohibitions>
+
+    <type_safety>
+      <rule id="TYPE-01">All variables must have inferable or explicit types</rule>
+      <rule id="TYPE-02">Use strict type checking - no Any unless absolutely necessary</rule>
+      <rule id="TYPE-03">Prefer specific types over generic (list[str] over list)</rule>
+      <rule id="TYPE-04">Use TypedDict or NamedTuple for structured data when appropriate</rule>
+    </type_safety>
+  </requirements>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       SECTION 4: CURRENT CODE (TO WORK WITH)
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <current_code>
+    <!--
+      Paste existing code here that needs to be refactored/rewritten.
+      If starting fresh, leave empty or describe the interface/API expected.
+    -->
+    <![CDATA[
+
+    ]]>
+  </current_code>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       SECTION 5: ADDITIONAL CONTEXT
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <context>
+    <dependencies>
+      <!-- List any external libraries/modules that can be used -->
+      <!-- Example: <dep name="typing" reason="type hints"/> -->
+    </dependencies>
+
+    <interfaces>
+      <!-- Define expected input/output interfaces if any -->
+      <input_format></input_format>
+      <output_format></output_format>
+    </interfaces>
+
+    <notes>
+      <!-- Any additional context or constraints -->
+    </notes>
+  </context>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       SECTION 6: RESPONSE INSTRUCTIONS (DO NOT MODIFY)
+       ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <response_instructions>
+    <instruction id="RESP-01">
+      THINK before answering - analyze requirements, plan structure, then implement
+    </instruction>
+    <instruction id="RESP-02">
+      Response must contain ONLY the complete rewritten code - no explanations,
+      no markdown, no artifacts, no code blocks markers, just pure code
+    </instruction>
+    <instruction id="RESP-03">
+      Code must be complete and runnable - no placeholders, no TODOs, no ellipsis
+    </instruction>
+    <instruction id="RESP-04">
+      Verify all requirements and prohibitions are satisfied before responding
+    </instruction>
+    <instruction id="RESP-05">
+      If code_structure freedom is "strict", define ONLY what was specified -
+      no additional functions or databases
+    </instruction>
+    <instruction id="RESP-06">
+      Order code logically: imports → databases → helper functions → main functions
+    </instruction>
+  </response_instructions>
+
+</prompt>

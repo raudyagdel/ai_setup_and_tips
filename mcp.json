@@ -6,7 +6,8 @@
                 "-y",
                 "@angular/cli",
                 "mcp"
-            ]
+            ],
+            "description": "Official Angular CLI MCP - Generate components, services, guards, and follow Angular best practices"
         },
         "context7": {
             "command": "npx",
@@ -15,7 +16,56 @@
                 "@upstash/context7-mcp"
             ],
             "env": {
-                "CONTEXT7_API_KEY": "YOUR_API_KEY"
+                "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+            },
+            "description": "Context7 - Documentation and context retrieval for libraries (Tailwind, TypeScript, PrimeNG, etc.)"
+        }
+    },
+    "instructions": {
+        "angular": {
+            "description": "Instructions for Angular project development",
+            "mcpUsage": {
+                "angular-cli": "Use for generating components, services, guards, interceptors, and following Angular patterns",
+                "context7": "Use for querying documentation of Tailwind CSS, TypeScript, PrimeNG, RxJS, and other libraries"
+            },
+            "whenToQuery": [
+                "Creating new components - Get latest Angular patterns via @angular/cli mcp",
+                "Implementing state management - Signals vs RxJS decisions",
+                "Setting up routing - Guards, resolvers, lazy loading",
+                "Configuring forms - Reactive forms, validation patterns",
+                "Implementing animations - Angular animations best practices",
+                "Styling components - Query Context7 for Tailwind + PrimeNG integration",
+                "Writing tests - Testing patterns and utilities",
+                "Performance optimization - Change detection, lazy loading",
+                "Error handling - Interceptors, global error handling",
+                "Accessibility - ARIA attributes, keyboard navigation"
+            ],
+            "requiredLibraries": {
+                "ui": "primeng (NO Material, NO Bootstrap)",
+                "styling": "tailwindcss + tailwindcss-animate",
+                "icons": "@hugeicons/angular",
+                "i18n": "@ngx-translate/core + @ngx-translate/http-loader",
+                "environment": "@ngx-env/builder",
+                "mockServer": "json-server + @faker-js/faker + concurrently"
+            },
+            "patterns": {
+                "components": "Standalone components only - NO NgModules",
+                "state": "Signals for local state, minimal RxJS",
+                "injection": "inject() function over constructor injection",
+                "templates": "New control flow syntax (@if, @for, @switch)"
+            },
+            "forbidden": [
+                "NgModules for new code",
+                "Bootstrap or Material UI",
+                "Manual image icons (use @hugeicons/angular)",
+                "any type (use unknown or proper types)",
+                "Nested subscriptions",
+                "Business logic in templates",
+                "Hardcoded API URLs"
+            ],
+            "configFiles": {
+                "copilotInstructions": ".github/copilot-instructions-angular.md",
+                "agentsTemplate": "AGENTS_FRONT_TEMPLATE.md"
             }
         }
     }
