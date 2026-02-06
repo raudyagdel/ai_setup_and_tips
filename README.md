@@ -10,10 +10,14 @@ This repository contains templates and configuration files to standardize AI-ass
 
 ```
 .
+├── .agents/                       # All agent skills and definitions
+│   ├── skills/                    # Specialized skills for different domains
+│   └── ...                        # Additional agent resources
 ├── .github/
 │   └── copilot-instructions.md    # GitHub Copilot configuration
 ├── AGENTS_BACKEND_TEMPLATE.md     # Backend AI agents (Spring Boot)
 ├── AGENTS_FRONT_TEMPLATE.md       # Frontend AI agents (Angular/Tailwind)
+├── AGENTS_SKILLS.md               # Complete agent roles with assigned skills
 ├── GEMINI.md                      # Google Gemini instructions
 ├── codex.md                       # OpenAI Codex instructions
 ├── claude.md                      # Anthropic Claude instructions
@@ -25,7 +29,18 @@ This repository contains templates and configuration files to standardize AI-ass
 
 ## 🚀 Quick Start
 
-### 1. GitHub Copilot Setup
+### 1. Agent Skills Management
+
+The `.agents` folder contains all available agent skills for both backend and frontend development. These skills are organized by domain and purpose:
+
+- **AGENTS_SKILLS.md** - Complete reference documenting all agent roles with their assigned skills
+- `.agents/skills/` - Individual skill implementations
+
+To understand which agents have which skills, refer to [AGENTS_SKILLS.md](./AGENTS_SKILLS.md).
+
+> **Note:** To create new agents or update existing ones, use the `agent_generator` or `agent_updater` tools. These tools ensure consistency and proper skill assignment across your agent ecosystem.
+
+### 2. GitHub Copilot Setup
 
 Copy the `.github/copilot-instructions.md` file to your project's `.github` folder:
 
@@ -34,7 +49,7 @@ mkdir -p your-project/.github
 cp .github/copilot-instructions.md your-project/.github/
 ```
 
-### 2. MCP (Model Context Protocol) Configuration
+### 3. MCP (Model Context Protocol) Configuration
 
 The `mcp.json` file contains MCP server configurations for enhanced AI capabilities:
 
@@ -58,7 +73,7 @@ The `mcp.json` file contains MCP server configurations for enhanced AI capabilit
 
 **Usage:** Copy this file to your VS Code settings or project root and update API keys.
 
-### 3. Backend AI Agents (Spring Boot)
+### 4. Backend AI Agents (Spring Boot)
 
 The `AGENTS_BACKEND_TEMPLATE.md` defines specialized agents for Java/Spring Boot development:
 
@@ -75,7 +90,7 @@ The `AGENTS_BACKEND_TEMPLATE.md` defines specialized agents for Java/Spring Boot
 | **ReviewAgent** | Code Review | SOLID principles, best practices |
 | **DebuggingAgent** | Problem Diagnosis | Error analysis, root cause investigation |
 
-### 4. Frontend AI Agents (Angular)
+### 5. Frontend AI Agents (Angular)
 
 The `AGENTS_FRONT_TEMPLATE.md` defines specialized agents for Angular/Tailwind development:
 
