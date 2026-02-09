@@ -1,26 +1,28 @@
-# Agent-Updater Skill
-## Systematic Updates to Expert Agents in AGENTS_SKILLS.md
+# Agent Updater Skill
 
-**Version:** 1.0  
-**Purpose:** Update, enhance, and maintain existing expert agents with new skills and capabilities  
-**Pair With:** `agent-generator` skill for complete agent lifecycle management  
-**Status:** Live - Use for all agent modifications
+**Version:** 2.0
+**Purpose:** Update, enhance, and maintain existing expert agent definition files
+**Framework:** Individual Agent Files (.agents/agents/*.md)
+**Pair With:** `agent-generator` skill for complete agent lifecycle
+**Status:** Active
 
 ---
 
 ## Overview
 
-The **Agent-Updater** skill provides a systematic approach to modifying existing expert agents in `.agents/AGENTS_SKILLS.md`. This complements the `agent-generator` skill which creates NEW agents.
+The **Agent Updater** skill provides systematic approaches to modify existing expert agents in `.agents/agents/`. This complements the `agent-generator` skill which creates NEW agents.
 
 **Key Use Cases:**
 - ✅ Add new primary skills to existing agents
 - ✅ Remove redundant or underutilized skills
 - ✅ Update agent role descriptions
 - ✅ Reorder skills by importance
-- ✅ Enhance "When to Use" examples
+- ✅ Enhance usage examples
+- ✅ Update collaboration patterns
 - ✅ Maintain consistency across agents
 - ✅ Archive or deprecate agents
-- ✅ Consolidate overlapping agents
+
+**Key Change in v2.0:** Works with individual agent files instead of centralized AGENTS_SKILLS.md registry.
 
 ---
 
@@ -41,15 +43,14 @@ ARCHIVE (when obsolete)
 
 ### Update Types
 
-| Type | Impact | Frequency | Tool |
-|------|--------|-----------|------|
-| **Skill Add** | Enhance capabilities | Regular | agent-updater |
-| **Skill Remove** | Reduce redundancy | Occasional | agent-updater |
-| **Reorder** | Improve priority | Regular | agent-updater |
-| **Role Update** | Clarify purpose | Rare | agent-updater |
-| **Example Enhance** | Better guidance | Regular | agent-updater |
-| **Deprecate** | Mark as outdated | Rare | agent-updater |
-| **Archive** | Remove completely | Very rare | agent-updater |
+| Type | Impact | Frequency | Files Updated |
+|------|--------|-----------|---------------|
+| **Skill Add** | Enhance capabilities | Regular | Agent .md + README.md |
+| **Skill Remove** | Reduce redundancy | Occasional | Agent .md + README.md |
+| **Reorder** | Improve priority | Regular | Agent .md |
+| **Role Update** | Clarify purpose | Rare | Agent .md + README.md |
+| **Example Enhance** | Better guidance | Regular | Agent .md |
+| **Version Update** | Track changes | Always | Agent .md |
 
 ---
 
@@ -57,20 +58,25 @@ ARCHIVE (when obsolete)
 
 ### Step 1: SELECT & ANALYZE
 
-**Identify the target agent:**
-```
-1. Find agent name in AGENTS_SKILLS.md
-2. Review current primary skills (count should be 3-8)
-3. Check last update date or git history
-4. Identify what needs updating
+**Locate the target agent:**
+```bash
+# List all agents
+ls -1 .agents/agents/*.md
+
+# Read specific agent
+cat .agents/agents/AngularAgent.md
+
+# Check agent metadata
+head -20 .agents/agents/AngularAgent.md
 ```
 
 **Validation Checklist:**
-- ✅ Agent exists in AGENTS_SKILLS.md
-- ✅ Agent name matches naming conventions
+- ✅ Agent file exists in `.agents/agents/`
+- ✅ Agent follows naming conventions
 - ✅ Current skills are still relevant
 - ✅ Role description is accurate
-- ✅ "When to Use" example is realistic
+- ✅ Usage examples are current
+- ✅ Version number is tracked
 
 ### Step 2: PLAN CHANGES
 
@@ -80,10 +86,11 @@ ARCHIVE (when obsolete)
 ```
 Purpose: Enhance agent with complementary skill
 Process:
-1. Verify skill exists in `.agents/skills/`
+1. Verify skill exists in `.agents/skills/{skill-name}/`
 2. Confirm skill complements current skills
 3. Write skill description (what it contributes)
-4. Choose insertion position (first, middle, or last)
+4. Choose insertion position (by importance)
+5. Update agent version number
 ```
 
 **Option B: Remove Skill**
@@ -92,97 +99,139 @@ Purpose: Reduce redundancy or scope creep
 Process:
 1. Verify skill is truly redundant
 2. Confirm no overlap issues with other agents
-3. Check if any agents depend on this agent's skill overlap
-4. Plan removal order (if removing multiple)
+3. Check agent still has 3+ skills remaining
+4. Plan removal and update agent
+5. Update agent version number
 ```
 
 **Option C: Reorder Skills**
 ```
-Purpose: Prioritize by importance to the agent
+Purpose: Prioritize by importance
 Process:
 1. List skills in order of importance
 2. Put most critical skills first
 3. Group complementary skills together
 4. Ensure logical flow
+5. Update agent version number
 ```
 
 **Option D: Update Role/Description**
 ```
-Purpose: Clarify agent purpose or scope
+Purpose: Clarify agent purpose
 Process:
-1. Keep role to ONE line
-2. Use domain + specialty pattern
-3. Avoid vague language
-4. Match existing agent style
+1. Keep role focused and specific
+2. Update responsibilities list
+3. Match existing agent style
+4. Update agent version number
 ```
 
-**Option E: Enhance Example**
+**Option E: Enhance Examples**
 ```
-Purpose: Provide better "When to Use" guidance
+Purpose: Provide better guidance
 Process:
-1. Update context (what are they building?)
-2. Refresh task description
+1. Update context (realistic scenarios)
+2. Refresh task descriptions
 3. Add current requirements
-4. Keep it realistic and actionable
+4. Keep examples actionable
 ```
 
 ### Step 3: VALIDATE CONSISTENCY
 
 **Check cross-impacts:**
 ```
-1. Skill Overlap - Does this skill now overlap with another agent?
-   → Check if consolidation is needed
-   
+1. Skill Overlap - Does this overlap with another agent?
+   → Check other agent files for conflicts
+
 2. Completeness - Does agent still have 3-8 skills?
    → Too few (< 3) = loses focus
    → Too many (> 8) = loses specialization
-   
+
 3. Complementarity - Do all skills work together?
    → Skills should complement, not duplicate
-   
+
 4. Coverage - Does agent cover its stated domain?
    → Skills should provide complete expertise
-   
-5. Format - Does it match other agents exactly?
+
+5. Format - Does it match other agents?
    → Verify markdown format consistency
 ```
 
 **Validation Rules:**
 - ✅ 3-8 primary skills (never fewer, rarely more)
-- ✅ Each skill has a 1-2 line description
-- ✅ Role is exactly one line
-- ✅ "When to Use" is in code block format
-- ✅ Agent name uses proper naming conventions
-- ✅ Skills are listed in order of importance
-- ✅ No skill applies to multiple agents (unless truly complementary)
+- ✅ Each skill has descriptive text
+- ✅ Skills link to actual SKILL.md files
+- ✅ Role is clear and specific
+- ✅ Usage examples are in code blocks
+- ✅ Version number incremented
+- ✅ Skills ordered by importance
+- ✅ "Last Updated" date is current
 
 ### Step 4: UPDATE & IMPLEMENT
 
-**Apply changes to AGENTS_SKILLS.md:**
+**Apply changes to agent file:**
 
 ```markdown
-### AgentName                              ← Keep agent number/order
-**Role:** Updated role description        ← Keep focused, one line
+# AgentName
 
-**Primary Skills:**
-- `skill-1` - Description of contribution  ← Ordered by importance
-- `skill-2` - Description of contribution
-- `skill-3` - Description of contribution
+**Agent Type:** Updated type if needed
+**Status:** Active
+**Version:** 1.1  ← Increment version
 
-**When to Use:**                           ← Keep code block format
-\`\`\`
-@AgentName
-[Updated realistic scenario with context, task, requirements]
-\`\`\`
+---
+
+## Role
+
+Updated role description if needed
+
+---
+
+## Primary Skills
+
+This agent has access to the following skills:
+
+- [`skill-1`](../skills/skill-1/SKILL.md) - Description  ← Ordered by importance
+- [`skill-2`](../skills/skill-2/SKILL.md) - Description
+- [`new-skill`](../skills/new-skill/SKILL.md) - Description  ← NEW SKILL
+- [`skill-3`](../skills/skill-3/SKILL.md) - Description
+
+---
+
+## When to Use
+
+Updated use cases if needed
+
+---
+
+## Usage Examples
+
+Updated examples if needed
+
+---
+
+## Collaboration
+
+Updated collaboration if needed
+
+---
+
+## Output Format
+
+Updated output format if needed
+
+---
+
+**Last Updated:** 2026-02-09  ← Update date
 ```
 
 **Implementation Steps:**
-1. Find agent section in AGENTS_SKILLS.md
+1. Open agent file in `.agents/agents/{AgentName}.md`
 2. Apply changes one type at a time
-3. Verify formatting matches other agents exactly
-4. Test by reviewing in context of nearby agents
-5. Update version number in file header
-6. Commit changes with clear message
+3. Increment version number
+4. Update "Last Updated" date
+5. Verify skill links work
+6. Check formatting matches other agents
+7. Update `.agents/agents/README.md` if needed
+8. Save and commit with clear message
 
 ---
 
@@ -193,77 +242,62 @@ Process:
 **When:** New skill released that enhances agent capabilities
 
 **Process:**
-```
-Step 1: Identify agent that would benefit
-Step 2: Find skill in `.agents/skills/`
-Step 3: Add to Primary Skills list
-Step 4: Position by importance
-Step 5: Write skill description
-Step 6: Update agent last-update date
+```bash
+# 1. Verify skill exists
+ls .agents/skills/new-skill-name/
+
+# 2. Open agent file
+# 3. Add to Primary Skills section
+# 4. Position by importance
+# 5. Increment version
+# 6. Update date
 ```
 
 **Example: Add to UXAgent**
 ```markdown
-### UXAgent
-**Role:** UI/UX & Accessibility Expert  
-**Primary Skills:**
-- `interface-design` - Dashboard, admin panels, interactive products
-- `tailwind-patterns` - Utility-first styling, responsive design patterns  ← NEW
-- `tailwind-mobile-first` - Mobile-first UX patterns
-- `angular-component` - Component architecture for accessibility
-- `tailwindcss-advanced-layouts` - Layout patterns for good UX
+## Primary Skills
+
+This agent has access to the following skills:
+
+- [`frontend-design`](../skills/frontend-design/SKILL.md) - Distinctive interface design
+- [`interface-design`](../skills/interface-design/SKILL.md) - Dashboard, admin panels
+- [`tailwind-patterns`](../skills/tailwind-patterns/SKILL.md) - Responsive design patterns  ← NEW
+- [`tailwindcss-mobile-first`](../skills/tailwindcss-mobile-first/SKILL.md) - Mobile-first UX
+- [`angular-component`](../skills/angular-component/SKILL.md) - Component architecture
 ```
 
 ### Pattern 2: Remove Redundant Skill
 
 **When:** Skill overlap detected or skill becomes obsolete
 
-**Process:**
-```
-Step 1: Confirm redundancy (skill X is superseded by skill Y)
-Step 2: Check other agents (do they rely on this agent having this skill?)
-Step 3: Update this agent (remove skill)
-Step 4: Update related agents if needed
-Step 5: Document why removed
-```
-
 **Example: Consolidation**
 ```markdown
-Before: IconsAgent has [tailwind-patterns, tailwind-css-patterns, ...]
-After: IconsAgent has [tailwind-patterns, ...]  ← Removed redundant tailwind-css-patterns
+Before: IconsAgent has 6 skills including tailwind-patterns and tailwind-css-patterns
+After: IconsAgent has 5 skills (removed tailwind-css-patterns)
 Reason: tailwind-patterns is more comprehensive
 ```
 
-### Pattern 3: Reorder for Clarity
+### Pattern 3: Reorder for Priority
 
-**When:** Skills out of priority order or related skills separated
+**When:** Skills need to reflect current importance
 
-**Process:**
-```
-Step 1: List all current skills
-Step 2: Rank by importance to agent's core purpose
-Step 3: Group complementary skills together
-Step 4: Verify no other agents' order affected
-Step 5: Update AGENTS_SKILLS.md
-```
-
-**Example: Reorder**
+**Example: Reorder AngularAgent**
 ```markdown
-Before: AngularAgent primary skills
+Before:
 - angular-component
-- angular-best-practices      ← Foundation skill
+- angular-best-practices
 - angular-development
 - angular-routing
 - angular-forms
 - angular-http
-- angular-signals             ← Critical for modern Angular
+- angular-signals  ← Should be first for Angular 21+
 - angular-directives
 - typescript
 
-After: AngularAgent primary skills (reordered)
-- angular-signals              ← Moved to position 1 (most important for 21+)
-- angular-component            ← Standalone components depend on signals
-- angular-best-practices       ← Foundation understanding
+After (reordered by importance):
+- angular-signals  ← Most important for modern Angular
+- angular-component
+- angular-best-practices
 - angular-development
 - angular-routing
 - angular-forms
@@ -272,57 +306,91 @@ After: AngularAgent primary skills (reordered)
 - typescript
 ```
 
-### Pattern 4: Update Role & Description
-
-**When:** Agent purpose shifts or clarity needed
+### Pattern 4: Update Role Description
 
 **Before:**
 ```markdown
-### SomeAgent
-**Role:** Handles various things
+## Role
+
+Handles various Angular tasks
 ```
 
 **After:**
 ```markdown
-### SomeAgent
-**Role:** Specialized Expert in Specific Domain
-```
+## Role
 
-**Guidelines:**
-- Use domain + specialty (e.g., "Frontend Security Expert")
-- Keep to exactly one line
-- Be specific (not vague)
-- Match existing agent style
+Angular Framework Specialist responsible for:
+- Standalone component development
+- Signal-based state management
+- Reactive forms implementation
+- HTTP service integration
+- Routing configuration
+- Custom directives
+- TypeScript patterns
+```
 
 ### Pattern 5: Enhance Usage Example
 
-**When:** Current example is outdated or unclear
-
 **Before:**
 ```markdown
-**When to Use:**
+### Example 1: Component
 \`\`\`
 @AgentName
-Do something
+Create a component
 \`\`\`
 ```
 
 **After:**
 ```markdown
-**When to Use:**
+### Example 1: Product List Component
 \`\`\`
-@AgentName
-Building a real-time dashboard for sales tracking.
-
-Task: Create interactive charts with real-time data updates
-
-Requirements:
-- WebSocket integration for live updates
-- Multiple chart types (bar, line, pie)
-- Export to CSV functionality
-- Dark mode support
+@AngularAgent
+Implement a product list component with filtering and pagination.
+Use signals for state, OnPush change detection, and standalone components.
 \`\`\`
 ```
+
+---
+
+## Command: Update Agent
+
+### Using Agent Updater
+
+```
+@AgentUpdater
+Update existing agent
+
+Agent Name: {AgentName}
+Agent File: .agents/agents/{AgentName}.md
+
+Update Type: [add_skill | remove_skill | reorder | update_role | update_examples]
+
+Details:
+{Specific changes to make}
+
+Skills to Add/Remove:
+- {skill-name} (reason)
+
+New Order (if reordering):
+1. {skill-1}
+2. {skill-2}
+3. {skill-3}
+
+Reason for Update:
+{Why are you making this change?}
+```
+
+### Agent Updater Will:
+
+1. ✅ Locate agent file in `.agents/agents/`
+2. ✅ Validate proposed changes
+3. ✅ Check skill exists (if adding)
+4. ✅ Verify skill count (3-8 range)
+5. ✅ Apply changes to agent file
+6. ✅ Increment version number
+7. ✅ Update "Last Updated" date
+8. ✅ Update `.agents/agents/README.md` if needed
+9. ✅ Provide summary of changes
 
 ---
 
@@ -330,47 +398,20 @@ Requirements:
 
 Before committing agent updates:
 
-- [ ] **Target Agent Found** - Agent exists in AGENTS_SKILLS.md
+- [ ] **Agent File Found** - File exists in `.agents/agents/`
 - [ ] **Changes Identified** - Clear what needs updating and why
 - [ ] **Skills Verified** - All skills exist in `.agents/skills/`
-- [ ] **Skill Count Valid** - 3-8 primary skills (not fewer, rarely more)
-- [ ] **Descriptions Written** - Each skill has explanation of contribution
+- [ ] **Skill Count Valid** - 3-8 primary skills
+- [ ] **Links Work** - All `../skills/{name}/SKILL.md` links valid
+- [ ] **Descriptions Written** - Each skill has explanation
 - [ ] **Ordering Verified** - Skills listed by importance
-- [ ] **Format Consistent** - Matches existing agent formatting exactly
-- [ ] **No Overlap Issues** - Doesn't duplicate other agents' skills
-- [ ] **Example Updated** - "When to Use" is realistic and current
-- [ ] **Role Clarity** - One-line role is specific and clear
-- [ ] **Version Updated** - Updated version number in file header
-- [ ] **Spell Check** - No typos in agent or skill names
-- [ ] **Cross-Reference Check** - Links/references still valid
-
----
-
-## Update Impact Analysis
-
-**Before Updating, Consider:**
-
-### Skill Added
-- ✅ Does it complement existing skills?
-- ✅ Does agent now have 8+ skills? (might be too many)
-- ✅ Do other agents also need this skill?
-
-### Skill Removed
-- ✅ Is it truly redundant?
-- ✅ Do any developers rely on this skill combo?
-- ✅ Should skill be merged with another agent?
-
-### Skills Reordered
-- ✅ Does new order reflect importance?
-- ✅ Are complementary skills still grouped?
-
-### Role Updated
-- ✅ Is old role still used by developers?
-- ✅ Should related agents' roles change too?
-
-### Example Changed
-- ✅ Is new example realistic?
-- ✅ Does it showcase updated skills well?
+- [ ] **Format Consistent** - Matches other agent files
+- [ ] **No Overlap Issues** - Doesn't duplicate other agents
+- [ ] **Examples Updated** - Usage examples are current
+- [ ] **Role Clarity** - Role is specific and clear
+- [ ] **Version Incremented** - Version number bumped
+- [ ] **Date Updated** - "Last Updated" is current
+- [ ] **README Updated** - Index updated if needed
 
 ---
 
@@ -378,137 +419,171 @@ Before committing agent updates:
 
 **DO:**
 - ✅ Update one agent at a time
-- ✅ Commit with clear message: "Update: Add X skill to AgentName"
-- ✅ Keep skill descriptions concise (1-2 lines)
-- ✅ Verify formatting before committing
-- ✅ Test agent with updated skills
+- ✅ Commit with clear message: "Update: Add X skill to AgentName v1.1"
+- ✅ Keep skill descriptions concise
+- ✅ Verify all links work
+- ✅ Test agent after updates
 - ✅ Document why changes were made
+- ✅ Increment version number
+- ✅ Update date
 
 **DON'T:**
-- ❌ Update multiple agents in one commit (hard to review)
-- ❌ Add arbitrary skills (must have clear purpose)
-- ❌ Exceed 8 skills per agent (creates unfocused agents)
-- ❌ Mix formatting styles between agents
+- ❌ Update multiple agents in one commit
+- ❌ Add arbitrary skills without purpose
+- ❌ Exceed 8 skills per agent
+- ❌ Mix formatting styles
 - ❌ Remove skills without documenting why
-- ❌ Update role without testing agent clarity
+- ❌ Forget to increment version
+- ❌ Leave broken skill links
+
+---
+
+## File Structure After Updates
+
+```
+.agents/
+├── agents/
+│   ├── README.md              ← Update if major changes
+│   ├── AngularAgent.md        ← Version 1.1 (updated)
+│   ├── TailwindAgent.md
+│   └── ...
+└── skills/
+    ├── angular-signals/
+    │   └── SKILL.md
+    ├── new-skill/             ← Newly added skill
+    │   └── SKILL.md
+    └── ...
+```
+
+---
+
+## Version Management
+
+**Version Numbering:**
+- Major update (2.0): Complete rewrite or major role change
+- Minor update (1.1): Add/remove skills, significant changes
+- Patch update (1.0.1): Fix typos, update examples
+
+**Track Changes:**
+```markdown
+## Version History (optional section)
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.1 | 2026-02-09 | Added tailwind-patterns skill |
+| 1.0 | 2026-02-06 | Initial agent creation |
+```
+
+---
+
+## Integration with Agent Generator
+
+**Agent Lifecycle:**
+
+1. **Create** (agent-generator)
+   - Define domain and skills
+   - Generate agent file
+   - Add to index
+
+2. **Use & Gather Feedback**
+   - Deploy agent
+   - Collect usage data
+
+3. **Update** (agent-updater) ← You are here
+   - Add/remove skills
+   - Update examples
+   - Enhance documentation
+   - Increment version
+
+4. **Maintain**
+   - Regular reviews
+   - Keep synchronized with skills
+   - Monitor effectiveness
 
 ---
 
 ## Real Update Examples
 
-### Example 1: Add `tailwind-patterns` to UXAgent
+### Example 1: Add Skill to StateAgent
 
-**Scenario:** New `tailwind-patterns` skill released with responsive design patterns
+**Command:**
+```
+@AgentUpdater
+Update existing agent
 
-**Change:**
-```markdown
-### UXAgent
-**Role:** UI/UX & Accessibility Expert  
-**Primary Skills:**
-- `interface-design` - Dashboard, admin panels, interactive products
-+ `tailwind-patterns` - Utility-first styling, responsive design patterns  ← NEW
-- `tailwind-mobile-first` - Mobile-first UX patterns
-- `angular-component` - Component architecture for accessibility
-- `tailwindcss-advanced-layouts` - Layout patterns for good UX
+Agent Name: StateAgent
+Update Type: add_skill
+
+Skill to Add: angular-forms
+Reason: State management often involves form state, and the new
+Signal Forms API requires understanding of signal-based form state.
+
+Position: After angular-signals (complementary skill)
 ```
 
-**Validation:**
-- ✅ Skill exists in `.agents/skills/`
-- ✅ Complements UX focus
-- ✅ Still 5 skills (within range)
-- ✅ No conflicts with other agents
-- ✅ Updated version number
+**Result:**
+- StateAgent.md updated
+- Version: 1.0 → 1.1
+- Skill added in correct position
+- Links validated
+- Date updated
 
-### Example 2: Remove Redundant Skill from IconsAgent
+### Example 2: Remove Redundant Skill
 
-**Scenario:** `tailwind-patterns` is more comprehensive than `tailwind-css-patterns`
+**Command:**
+```
+@AgentUpdater
+Update existing agent
 
-**Change:**
-```markdown
-### IconsAgent
-**Role:** Icon Management & Implementation Expert  
-**Primary Skills:**
-- `tailwind-patterns` - Icon styling patterns and responsive handling
-- `tailwind-css-patterns` ← REMOVED (superseded by tailwind-patterns)
-- `interface-design` - Icon selection and placement
-- `tailwindcss-fundamentals-v4` - Dark mode icon support
-- `angular-component` - Icon component patterns
+Agent Name: IconsAgent
+Update Type: remove_skill
+
+Skill to Remove: tailwind-css-patterns
+Reason: Redundant with tailwind-patterns which is more comprehensive
+
+Verify: Agent still has 5 skills (above minimum of 3)
 ```
 
-**Validation:**
-- ✅ Confirmed redundancy
-- ✅ No other agents rely on this combo
-- ✅ Still 4 skills (within range)
-- ✅ Improves agent focus
-
-### Example 3: Reorder AngularAgent Skills
-
-**Scenario:** Angular Signals should be most important for modern Angular 21+
-
-**Change:**
-```markdown
-### AngularAgent
-**Role:** Angular Framework Specialist  
-**Primary Skills:**
-+ `angular-signals` - Signals, computed(), linkedSignal(), effects  ← MOVED TO TOP
-- `angular-component` - Standalone components, signals inputs/outputs
-- `angular-best-practices` - Modern Angular 21+ patterns
-- `angular-development` - Expert Angular and TypeScript development
-- ... (rest of skills)
-```
-
-**Validation:**
-- ✅ New order reflects importance
-- ✅ Signals is foundation for modern Angular
-- ✅ Still all 9 skills
-- ✅ Updated version number
-
----
-
-## Integration with Agent-Generator
-
-**Agent Lifecycle:**
-
-1. **Create** (agent-generator)
-   - Use AGENT_TEMPLATE.md
-   - Follow 5-step creation process
-   - Add to AGENTS_SKILLS.md
-
-2. **Use & Gather Feedback**
-   - Developers ask the agent
-   - Collect feedback on skill gaps
-
-3. **Update** (agent-updater) ← Current skill
-   - Add missing skills
-   - Remove redundant skills
-   - Reorder by importance
-   - Enhance examples
-
-4. **Maintain**
-   - Regular skill reviews
-   - Keep agent sharp and focused
-   - Evolution based on usage patterns
-
-5. **Archive** (if needed)
-   - Mark obsolete agents
-   - Redirect to replacement agents
+**Result:**
+- IconsAgent.md updated
+- Version: 1.0 → 1.1
+- Skill removed
+- Still 5 skills remaining
+- Date updated
 
 ---
 
 ## Summary
 
-The **Agent-Updater** skill provides:
+The **Agent Updater** skill provides:
 
-✅ **Systematic approach** to agent modifications  
-✅ **Safety checks** to prevent inconsistency  
-✅ **Clear processes** for all update types  
-✅ **Integration** with agent-generator  
-✅ **Validation rules** for consistency  
-✅ **Real-world examples** for reference  
+✅ **Systematic updates** to individual agent files
+✅ **Version management** for tracking changes
+✅ **Safety checks** to prevent inconsistency
+✅ **Clear processes** for all update types
+✅ **Integration** with agent-generator
+✅ **Validation rules** for consistency
+✅ **Real-world examples** for reference
 
 **Result:** Agents stay relevant, focused, and powerful as your skill library evolves.
 
 ---
 
-**Ready to update an agent?** See [AGENT_TEMPLATE.md](./AGENT_TEMPLATE.md)  
-**Creating new agents?** Use [agent-generator](../agent-generator/AGENT_TEMPLATE.md)
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 2.0 | 2026-02-09 | Moved to individual agent files format |
+| 1.0 | 2026-02-06 | Initial release with AGENTS_SKILLS.md |
+
+---
+
+## See Also
+
+- [Agent Generator](../agent-generator/SKILL.md) - Create new agents
+- [Agents Directory](../../agents/README.md) - All agent definitions
+- [Skills Directory](../) - Available skills
+
+---
+
+**Ready to update an agent?** Use the command format above!

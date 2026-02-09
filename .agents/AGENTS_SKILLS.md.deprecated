@@ -1,0 +1,89 @@
+# DEPRECATED - AGENTS_SKILLS.md
+
+**Status:** Deprecated as of 2026-02-09
+**Replaced By:** Individual agent definition files in `.agents/agents/`
+
+---
+
+## ⚠️ This File is Deprecated
+
+This centralized agent-skills mapping has been replaced by individual agent definition files.
+
+### New Structure
+
+Instead of maintaining a single large registry file, each agent now has its own definition file:
+
+```
+.agents/
+├── agents/
+│   ├── README.md                    ← Agent index
+│   ├── AngularAgent.md              ← Individual agent file
+│   ├── TailwindAgent.md             ← Individual agent file
+│   ├── StateAgent.md                ← Individual agent file
+│   └── ...                          ← 15 total agents
+└── skills/
+    ├── angular-signals/
+    ├── tailwind-4/
+    └── ...                          ← 25 total skills
+```
+
+### Why the Change?
+
+✅ **Better Organization** - Each agent is a self-contained file
+✅ **Easier Updates** - Update individual agents without conflicts
+✅ **Version Control** - Track changes per agent
+✅ **Scalability** - Add agents without growing a monolithic file
+✅ **Modularity** - Agents can be moved, shared, or archived independently
+
+### Migration Guide
+
+**Old Way (DEPRECATED):**
+```markdown
+# AGENTS_SKILLS.md
+
+### 1. AngularAgent
+**Role:** Angular Framework Specialist
+**Primary Skills:**
+- angular-component
+- angular-signals
+...
+```
+
+**New Way (CURRENT):**
+```markdown
+# .agents/agents/AngularAgent.md
+
+**Agent Type:** Angular Framework Specialist
+**Status:** Active
+**Version:** 1.0
+
+## Role
+...
+
+## Primary Skills
+- [`angular-component`](../skills/angular-component/SKILL.md) - Description
+- [`angular-signals`](../skills/angular-signals/SKILL.md) - Description
+...
+```
+
+### Where to Find Agents Now
+
+- **Agent Definitions:** [.agents/agents/](./agents/)
+- **Agent Index:** [.agents/agents/README.md](./agents/README.md)
+- **All Agents List:** Run `ls -1 .agents/agents/*.md`
+
+### Updated Skills
+
+- **Agent Generator:** [.agents/skills/agent-generator/SKILL.md](./skills/agent-generator/SKILL.md) (v2.0)
+- **Agent Updater:** [.agents/skills/agent-updater/SKILL.md](./skills/agent-updater/SKILL.md) (v2.0)
+
+Both skills now work with individual agent files instead of this registry.
+
+---
+
+**This file is kept for reference only. Do not update it.**
+**Use `.agents/agents/` for all agent definitions.**
+
+---
+
+Last updated: 2026-02-09

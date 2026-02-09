@@ -1,9 +1,9 @@
 # Agent Generator Skill
 
-**Version:** 1.0  
-**Purpose:** Create, configure, and manage Expert Agents with specialized skill sets  
-**Framework:** Angular 21+ Development with DDD Architecture  
-**Status:** Authoritative
+**Version:** 2.0
+**Purpose:** Create and configure Expert Agent definitions with specialized skill sets
+**Framework:** Individual Agent Definition Files (.agents/agents/*.md)
+**Status:** Active
 
 ---
 
@@ -11,26 +11,27 @@
 
 The **Agent Generator Skill** enables you to:
 
-✅ Create new Expert Agents following best practices  
-✅ Add/update capabilities to existing agents  
-✅ Map agents to their underlying skills automatically  
-✅ Generate agent configuration files  
-✅ Maintain AGENTS_SKILLS.md registry  
-✅ Create usage prompts and examples  
+✅ Create new Expert Agent definition files in `.agents/agents/`
+✅ Automatically detect and suggest skills from `.agents/skills/`
+✅ Map agents to their underlying skills intelligently
+✅ Generate standardized agent markdown files
+✅ Maintain consistency across all agent definitions
+✅ Create usage examples and collaboration patterns
+
+**Key Change in v2.0:** Uses individual agent files (e.g., `AngularAgent.md`) instead of centralized AGENTS_SKILLS.md registry.
 
 ---
 
 ## When to Use This Skill
 
-Use the Agent Generator Skill when:
+Use the Agent Generator when:
 
-- ✅ Creating a new Expert Agent for a new domain
-- ✅ Adding new capabilities to existing agents
-- ✅ Mapping skills to agents in your workspace
-- ✅ Maintaining agent documentation (AGENTS_SKILLS.md)
-- ✅ Generating agent configuration for CI/CD or automation
-- ✅ Planning multi-agent workflows
-- ✅ Reviewing agent-skill alignment
+- ✅ Creating a new Expert Agent for a specific domain
+- ✅ Analyzing available skills for agent creation
+- ✅ Generating agent definition files
+- ✅ Planning agent skill combinations
+- ✅ Setting up agent collaboration patterns
+- ✅ Creating agent documentation
 
 ---
 
@@ -43,28 +44,44 @@ An Expert Agent combines **multiple skills** into a specialized problem-solver:
 ```
 Expert Agent = {
   name: string,              // e.g., "APIIntegrationAgent"
-  role: string,              // e.g., "API Integration & HTTP Specialist"
-  description: string,       // Why does this agent exist?
-  capabilities: string[],    // What can it do?
-  primary_skills: string[],  // Which skills power it?
-  focus_areas: string[],     // Deep expertise areas
-  workflows: string[],       // Which workflows use it?
-  prompt_template: string   // How to ask it for help
+  type: string,              // e.g., "API Integration & HTTP Specialist"
+  role: string,              // What does this agent do?
+  primary_skills: Skill[],   // Which skills power it? (3-8 skills)
+  when_to_use: string[],     // Clear use cases
+  usage_examples: Example[], // 3+ practical examples
+  collaboration: Agent[],    // Which agents work well together
+  output_format: string[]    // What to expect from responses
 }
 ```
 
-### What is a Skill?
+### Agent Definition File Structure
 
-A Skill is a **focused knowledge source** that teaches specific patterns:
+Each agent is defined in `.agents/agents/{AgentName}.md`:
 
-```
-Skill = {
-  name: string,              // e.g., "angular-http"
-  description: string,       // What does it teach?
-  file: string,              // Path to SKILL.md
-  domain: string,            // e.g., "Angular", "State Management"
-  capabilities: string[]     // What can you learn from it?
-}
+```markdown
+# AgentName
+
+**Agent Type:** {Specialization}
+**Status:** Active
+**Version:** 1.0
+
+## Role
+{Detailed role description with responsibilities}
+
+## Primary Skills
+- [`skill-name`](../skills/skill-name/SKILL.md) - Description
+
+## When to Use
+{List of use cases}
+
+## Usage Examples
+{3+ realistic examples}
+
+## Collaboration
+{Which agents work well together}
+
+## Output Format
+{What to expect from this agent}
 ```
 
 ---
@@ -76,95 +93,89 @@ Skill = {
 What problem domain does your agent address?
 
 **Examples:**
-- ❌ Too broad: "Frontend"
+- ❌ Too broad: "Frontend Development"
 - ✅ Specific: "Real-Time Data Synchronization"
+- ✅ Specific: "Accessibility Compliance & WCAG"
 
-- ❌ Too broad: "Styling"
-- ✅ Specific: "Dark Mode Theme Management"
+### Step 2: Discover Available Skills
 
-### Step 2: Select 3-6 Primary Skills
+**Automatic Skill Discovery:**
+```bash
+# List all available skills
+ls -1 .agents/skills/
 
-Search your `.agents/skills/` directory and pick skills that:
-
-1. Cover the domain completely
-2. Complement each other (no overlap)
-3. Are authoritative and well-maintained
+# Read skill descriptions
+grep -r "^description:" .agents/skills/*/SKILL.md
+```
 
 **Skill Selection Framework:**
+- Coverage: Do skills cover the domain completely?
+- Complementarity: Do skills work well together?
+- Relevance: Are all skills necessary for this domain?
+- Count: 3-8 skills (not too few, not too many)
 
-```
-Domain: {Your Domain}
+### Step 3: Define Agent Metadata
 
-Available Skills:
-┌─ Skill 1: {description} ✓ Chosen
-├─ Skill 2: {description} ✗ Too overlapping
-├─ Skill 3: {description} ✓ Chosen
-├─ Skill 4: {description} ✗ Out of scope
-└─ Skill 5: {description} ✓ Chosen
-```
+**Agent Naming Convention:**
+- Pattern: `{Domain}{Type}Agent`
+- Examples: `StateManagementAgent`, `PerformanceOptimizationAgent`
+- Avoid: `HelperAgent`, `GenericAgent`, `Agent`
 
-### Step 3: Define Capabilities
+**Agent Type:**
+- One-line specialization description
+- Format: "{Domain} {Specialty}"
+- Examples: "Frontend Performance Optimization Expert"
 
-**Turn skills into action verbs:**
+### Step 4: Map Skills to Agent
 
-| Skill | → | Capability |
-|-------|---|------------|
-| `angular-signals` | → | "Implement reactive state with signals and computed values" |
-| `angular-http` | → | "Set up data fetching with HttpClient and error handling" |
-| `interface-design` | → | "Design accessible, responsive layouts" |
-
-**Capability Guidelines:**
-- Use action verbs: Create, Build, Implement, Design, Optimize, Review, Audit
-- Be specific about *what* the agent can help with
-- 5-8 capabilities (not too many)
-
-### Step 4: Create Agent Definition
-
-Name your agent with clear domain indication:
-
-**Good Names:**
-- `StateManagementAgent` (clear domain)
-- `AccessibilityAuditAgent` (clear action)
-- `FormValidationAgent` (clear focus)
-
-**Avoid:**
-- `HelperAgent`, `UtilAgent`, `Agent` (too generic)
-- `SuperAgent`, `DoEverythingAgent` (scope creep)
-
-### Step 5: Write Usage Prompt
-
-Make it easy for users to ask your agent:
-
-```
-@YourAgentName
-{What are you building?}
-
-Task: {What do you need help with?}
-
-Requirements:
-- {Specific requirement}
-- {Specific requirement}
-
-Constraints:
-- {Any limitations}
+**For each skill, document:**
+```markdown
+- [`skill-name`](../skills/skill-name/SKILL.md) - What this skill contributes to the agent
 ```
 
-### Step 6: Create Workflow Mappings
+**Example:**
+```markdown
+## Primary Skills
 
-Identify which workflows benefit from this agent:
+- [`angular-signals`](../skills/angular-signals/SKILL.md) - Signal-based reactive state management
+- [`angular-component`](../skills/angular-component/SKILL.md) - Standalone components with signals
+- [`angular-best-practices`](../skills/angular-best-practices/SKILL.md) - Modern Angular 21+ patterns
+```
 
-```yaml
-workflows_using_agent:
-  - new_feature_development
-  - performance_optimization
-  - code_review
+### Step 5: Create Usage Examples
+
+Provide 3+ realistic examples showing:
+- Context (what are they building?)
+- Task (what do they need?)
+- Expected outcome
+
+**Example Format:**
+```markdown
+### Example 1: Component Creation
+\`\`\`
+@AgentName
+Create a product list component with filtering and pagination.
+Use signals for state and OnPush change detection.
+\`\`\`
+```
+
+### Step 6: Define Collaboration
+
+List which agents work well together:
+```markdown
+## Collaboration
+
+Works well with:
+- **ArchitectAgent** - For architectural decisions
+- **TailwindAgent** - For styling implementation
+- **TestingAgent** - For test coverage
 ```
 
 ---
 
 ## Command: Create New Agent
 
-Use this command structure to generate a new agent:
+### Using Agent Generator
 
 ```
 @AgentGenerator
@@ -172,152 +183,134 @@ Create new expert agent
 
 Agent Name: {YourAgentName}
 Domain: {Problem domain}
-Primary Expertise: {Main knowledge area}
+Specialization: {Specific expertise area}
 
-Description: {2-3 sentence description}
+Role Description:
+{2-3 sentence description of agent's responsibilities}
 
-Capabilities:
-- {Capability 1}
-- {Capability 2}
-- {Capability 3}
-- {Capability 4}
-- {Capability 5}
+Skills to Include:
+- skill-name-1 (explain why)
+- skill-name-2 (explain why)
+- skill-name-3 (explain why)
+- skill-name-4 (explain why)
 
-Skills to Map:
-- skill-name-1
-- skill-name-2
-- skill-name-3
-- skill-name-4
+Use Cases:
+- {Use case 1}
+- {Use case 2}
+- {Use case 3}
 
-Focus Areas:
-- {Area 1}
-- {Area 2}
-- {Area 3}
+Example Usage:
+{Provide realistic scenario}
 
-Usage Example:
-[Your usage template]
+Collaborates With:
+- {Agent 1}
+- {Agent 2}
 ```
+
+### Agent Generator Will:
+
+1. ✅ Validate agent name follows conventions
+2. ✅ Check that all skills exist in `.agents/skills/`
+3. ✅ Verify skill count (3-8 skills)
+4. ✅ Generate agent definition file
+5. ✅ Create skill links with descriptions
+6. ✅ Format usage examples
+7. ✅ Add collaboration section
+8. ✅ Save to `.agents/agents/{AgentName}.md`
+9. ✅ Update `.agents/agents/README.md` index
 
 ---
 
-## Command: Add Capability to Existing Agent
-
-Extend an existing agent with new capabilities:
-
-```
-@AgentGenerator
-Add capability to existing agent
-
-Agent Name: {AgentName}
-New Capability: {capability description}
-Supported By Skills: {skill-1, skill-2}
-Works in Workflows: {workflow-1, workflow-2}
-```
-
----
-
-## Command: Update Skill Mapping
-
-Reallocate skills between agents:
-
-```
-@AgentGenerator
-Update skill mapping
-
-Current State:
-- Agent A has skills: {skill-1, skill-2}
-- Agent B has skills: {skill-3}
-
-Desired State:
-- Agent A should have: {skill-1, skill-2, skill-4}
-- Agent B should have: {skill-3, skill-5}
-
-Reason: {Why this change?}
-```
-
----
-
-## Command: Generate Agent Registry
-
-Create/update AGENTS_SKILLS.md with full agent inventory:
-
-```
-@AgentGenerator
-Generate agent registry
-
-Format: Complete registry of all agents
-Include: Skills mapping, capabilities, workflows
-Output: AGENTS_SKILLS.md (markdown table)
-```
-
----
-
-## Template: New Agent Definition
-
-Copy this template when creating agents:
+## Agent Definition Template
 
 ```markdown
-## {AgentName}
+# {AgentName}
 
-**Role:** {One-line role description}
+**Agent Type:** {Domain} {Specialty}
+**Status:** Active
+**Version:** 1.0
 
-**Description:** {2-3 sentence explanation of expertise and use cases}
+---
 
-**Primary Expertise:** {Main knowledge area}
+## Role
 
-**Capabilities:**
-- "Create/Build/Implement/Design {specific capability}"
-- "Create/Build/Implement/Design {specific capability}"
-- "Create/Build/Implement/Design {specific capability}"
-- "Create/Build/Implement/Design {specific capability}"
-- "Create/Build/Implement/Design {specific capability}"
+{Agent specialization} responsible for:
+- {Responsibility 1}
+- {Responsibility 2}
+- {Responsibility 3}
+- {Responsibility 4}
+- {Responsibility 5}
 
-**Primary Skills:**
-- `skill-name-1` - What this skill provides to the agent
-- `skill-name-2` - What this skill provides to the agent
-- `skill-name-3` - What this skill provides to the agent
-- `skill-name-4` - What this skill provides to the agent (optional)
+---
 
-**Implementation Focus:**
-- Specific area 1
-- Specific area 2
-- Specific area 3
+## Primary Skills
 
-**Used in Workflows:**
-- workflow-name-1
-- workflow-name-2
-- workflow-name-3
+This agent has access to the following skills:
 
-**Usage Template:**
+- [\`skill-1\`](../skills/skill-1/SKILL.md) - What skill-1 provides
+- [\`skill-2\`](../skills/skill-2/SKILL.md) - What skill-2 provides
+- [\`skill-3\`](../skills/skill-3/SKILL.md) - What skill-3 provides
+- [\`skill-4\`](../skills/skill-4/SKILL.md) - What skill-4 provides
 
+---
+
+## When to Use
+
+Use this agent when you need to:
+
+✅ {Use case 1}
+✅ {Use case 2}
+✅ {Use case 3}
+✅ {Use case 4}
+✅ {Use case 5}
+
+---
+
+## Usage Examples
+
+### Example 1: {Scenario Name}
 \`\`\`
 @{AgentName}
-{Context: What are you building?}
+{Context: What are they building?}
 
-Task: {What do you need?}
-
-Requirements:
-- {Requirement 1}
-- {Requirement 2}
-- {Requirement 3}
-
-Constraints: {Any limitations}
+{Task: What do they need?}
 \`\`\`
 
-**Example Usage:**
-
+### Example 2: {Scenario Name}
 \`\`\`
 @{AgentName}
-{Real-world example matching your domain}
-
-Task: {Example task}
-
-Requirements:
-- {Example requirement 1}
-- {Example requirement 2}
-
-Constraints: {Example constraint}
+{Different scenario}
 \`\`\`
+
+### Example 3: {Scenario Name}
+\`\`\`
+@{AgentName}
+{Another scenario}
+\`\`\`
+
+---
+
+## Collaboration
+
+Works well with:
+- **{Agent1}** - For {what}
+- **{Agent2}** - For {what}
+- **{Agent3}** - For {what}
+
+---
+
+## Output Format
+
+When responding, this agent will:
+1. {Expected output 1}
+2. {Expected output 2}
+3. {Expected output 3}
+4. {Expected output 4}
+5. {Expected output 5}
+
+---
+
+**Last Updated:** {YYYY-MM-DD}
 ```
 
 ---
@@ -326,157 +319,149 @@ Constraints: {Example constraint}
 
 ### ✅ DO
 
-- ✅ Keep agents focused (1 primary domain)
-- ✅ Use 3-6 skills per agent (not too many, not too few)
-- ✅ Name agents after their expertise (not names)
-- ✅ Update AGENTS_SKILLS.md after creating agents
-- ✅ Document workflow integrations
-- ✅ Create clear usage examples
-- ✅ Review agent-skill alignment regularly
-- ✅ Use action verbs in capabilities
-- ✅ Keep descriptions concise (2-3 sentences max)
-- ✅ Link agents to existing workflows
+- ✅ Keep agents focused on one domain
+- ✅ Use 3-8 skills per agent
+- ✅ Name agents descriptively (not generic names)
+- ✅ Update `.agents/agents/README.md` after creating
+- ✅ Link to actual skill files
+- ✅ Provide realistic usage examples
+- ✅ Define clear collaboration patterns
+- ✅ Use consistent formatting
 
 ### ❌ DON'T
 
-- ❌ Create generic agents ("HelperAgent", "Agent")
-- ❌ Add unrelated capabilities to agents
-- ❌ Use skills from undocumented sources
-- ❌ Forget to update agent registry
-- ❌ Create agents without clear workflows
-- ❌ Overlap too much with existing agents
+- ❌ Create generic agents ("HelperAgent")
+- ❌ Add unrelated skills
+- ❌ Link to non-existent skills
 - ❌ Skip usage examples
-- ❌ Make long, vague descriptions
-- ❌ Assume users know how to use your agent
+- ❌ Use vague descriptions
+- ❌ Overlap heavily with existing agents
+- ❌ Exceed 8 skills (loses focus)
+- ❌ Go below 3 skills (insufficient expertise)
 
 ---
 
-## Real-World Examples
+## File Organization
 
-### Example 1: Creating a Refactoring Agent
-
-```
-Domain: Code Refactoring & Technical Debt
-
-Selected Skills:
-✓ angular-best-practices
-✓ tailwind-css-patterns
-✓ typescript
-✓ interface-design
-
-Capabilities:
-- "Identify and refactor large components into smaller ones"
-- "Convert Observable-based code to Signal patterns"
-- "Consolidate and clean up duplicate styling"
-- "Suggest TypeScript type improvements"
-- "Improve component organization and responsibility"
-
-Workflows:
-- code_refactoring
-- code_review
-- migration
-```
-
-### Example 2: Adding Security Capability
-
-```
-Existing Agent: AngularAgent
-New Capability: "Audit authentication and authorization flows"
-Supporting Skills: FrontendSecurityAgent knowledge
-Workflows: vulnerability_detection, code_review
-```
-
----
-
-## File Structure
-
-After creating your agent, your workspace should look like:
+After creating an agent:
 
 ```
 .agents/
-├── skills/
-│   ├── skill-1/
-│   │   └── SKILL.md
-│   ├── skill-2/
-│   │   └── SKILL.md
-│   └── skill-3/
-│       └── SKILL.md
-├── AGENTS_SKILLS.md          ← Agent registry (auto-generated/updated)
-├── AGENT_TEMPLATE.md         ← Template for creating agents
-└── agent-generator/
-    ├── SKILL.md             ← This file
-    └── QUICK_REFERENCE.md   ← Quick commands
+├── agents/
+│   ├── README.md                    ← Update index
+│   ├── YourNewAgent.md              ← New agent file
+│   ├── AngularAgent.md
+│   ├── TailwindAgent.md
+│   └── ...
+└── skills/
+    ├── skill-1/
+    │   └── SKILL.md
+    ├── skill-2/
+    │   └── SKILL.md
+    └── ...
 ```
 
 ---
 
-## Outputs Generated
+## Automatic Skill Discovery
 
-When using the Agent Generator Skill, you get:
+The Agent Generator can automatically suggest skills:
 
-1. **Agent Definition** (markdown)
-   - Full agent specification
-   - Capabilities list
-   - Skill mapping
-   - Usage template
+**Discovery Process:**
+1. Scan `.agents/skills/` directory
+2. Read each `SKILL.md` file
+3. Extract skill name and description
+4. Categorize by domain (Angular, Tailwind, Architecture, etc.)
+5. Suggest relevant skills for your agent's domain
 
-2. **AGENTS_SKILLS.md Registry** (auto-updated)
-   - Complete agent inventory
-   - Skill-to-agent mapping
-   - Workflow references
-   - Quick lookup table
+**Example Output:**
+```
+Available Angular Skills:
+✓ angular-best-practices - Modern Angular 21+ patterns
+✓ angular-signals - Signal-based state management
+✓ angular-component - Standalone components
+✓ angular-forms - Reactive forms with signals
+✓ angular-http - HTTP services and data fetching
 
-3. **Configuration Files** (optional)
-   - YAML agent definitions
-   - Workflow integrations
-   - Prompt templates
+Available Tailwind Skills:
+✓ tailwind-4 - Tailwind CSS 4 fundamentals
+✓ tailwindcss-animations - Animation utilities
+✓ tailwind-design-system - Design tokens and themes
 
----
-
-## FAQ
-
-**Q: Can I create an agent without skills?**  
-A: No. Every agent must map to 2+ existing skills. Otherwise, what is it an expert in?
-
-**Q: How many agents should I have?**  
-A: Start with 8-12 focused agents covering your major domains. Add more as needed.
-
-**Q: Can agents share skills?**  
-A: Yes! Skills are shared knowledge. Multiple agents can use the same skill.
-
-**Q: What if my domain doesn't have a skill?**  
-A: Create the skill first, then create the agent using it.
-
-**Q: How often should I update AGENTS_SKILLS.md?**  
-A: After any agent creation, capability addition, or skill changes. Keep it as source of truth.
-
-**Q: Can I modify an existing agent?**  
-A: Yes! Add capabilities, update skills, improve documentation. Use the "Add Capability" command.
+Available Architecture Skills:
+✓ clean-ddd-hexagonal - DDD + Hexagonal patterns
+✓ angular-architecture - Feature-based structure
+```
 
 ---
 
-## Quick Commands Summary
+## Integration with Agent Updater
 
-| Command | Purpose |
-|---------|---------|
-| `create_agent` | Create new expert agent from scratch |
-| `add_capability` | Add new capability to existing agent |
-| `map_skills` | Assign skills to agent |
-| `gen_registry` | Generate AGENTS_SKILLS.md |
-| `add_workflow` | Link agent to workflows |
-| `update_prompt` | Improve usage prompt template |
-| `review_alignment` | Check agent-skill fit |
+**Agent Lifecycle:**
+
+1. **Create** (agent-generator) ← You are here
+   - Define domain and skills
+   - Generate agent file
+   - Add to index
+
+2. **Use & Gather Feedback**
+   - Deploy agent
+   - Collect usage data
+
+3. **Update** (agent-updater)
+   - Add/remove skills
+   - Update examples
+   - Enhance documentation
+
+4. **Maintain**
+   - Regular reviews
+   - Keep synchronized with skills
 
 ---
 
-## Integration with Your Workspace
+## Example: Creating a New Agent
 
-This skill works best with:
+### Request:
+```
+@AgentGenerator
+Create new expert agent
 
-- **AGENT_TEMPLATE.md** - Reference for creating agents
-- **AGENTS_SKILLS.md** - Central registry of all agents (auto-maintained)
-- **Skills directory** - `.agents/skills/` contains all skill definitions
-- **Your Angular project** - Agents help solve real frontend problems
+Agent Name: DataVisualizationAgent
+Domain: Data Visualization & Charts
+Specialization: Chart.js & Interactive Data Display
+
+Role Description:
+Expert in creating interactive data visualizations using Chart.js with
+Angular integration. Handles chart configuration, real-time updates,
+and responsive design.
+
+Skills to Include:
+- angular-component (for chart components)
+- angular-signals (for reactive data)
+- interface-design (for visual design)
+- tailwind-css-patterns (for styling)
+
+Use Cases:
+- Create dashboard charts
+- Implement real-time data visualization
+- Design responsive chart layouts
+- Configure Chart.js with Angular
+
+Collaborates With:
+- AngularAgent (for component implementation)
+- TailwindAgent (for styling)
+- StateAgent (for data management)
+```
+
+### Generated Output:
+Creates `DataVisualizationAgent.md` with:
+- Proper header and metadata
+- Role description
+- 4 mapped skills with links
+- Clear use cases
+- 3 usage examples
+- Collaboration section
+- Output format expectations
 
 ---
 
@@ -484,42 +469,29 @@ This skill works best with:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0 | 2026-02-06 | Initial release |
+| 2.0 | 2026-02-09 | Moved to individual agent files format |
+| 1.0 | 2026-02-06 | Initial release with AGENTS_SKILLS.md |
 
 ---
 
-## Support & Questions
+## Support
 
 When using this skill, provide:
 
-1. **What agent you're creating** - Name, domain, purpose
-2. **Available skills** - List of existing skills to use
-3. **Expected workflows** - Where this agent will be used
-4. **Real-world example** - How someone would use it
-
-Example question:
-```
-@AgentGenerator
-Create new agent for real-time data synchronization
-
-Existing skills available:
-- angular-http
-- angular-signals
-- interface-design
-- tailwindcss-animations
-
-Expected workflows:
-- real-time_data_features
-- performance_optimization
-
-Example task:
-Build a live event feed component showing user activities
-```
+1. **Agent name** - Descriptive, follows conventions
+2. **Domain** - Clear problem area
+3. **Available skills** - From `.agents/skills/`
+4. **Use cases** - Real-world scenarios
+5. **Collaboration needs** - Which agents work together
 
 ---
 
 ## See Also
 
-- [AGENT_TEMPLATE.md](../AGENT_TEMPLATE.md) - Full template guide
-- [AGENTS_SKILLS.md](../AGENTS_SKILLS.md) - Agent registry
+- [Agent Updater](../agent-updater/SKILL.md) - Update existing agents
+- [Agents Directory](../../agents/README.md) - All agent definitions
 - [Skills Directory](../) - Available skills
+
+---
+
+**Ready to create an agent?** Use the command format above and specify your domain!
